@@ -1,0 +1,203 @@
+<%- include('partials/header', { page: 'shop' }) %>
+
+    <main class="container mt-20">
+        <div style="margin-bottom: 30px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h1 style="margin: 0;">Shop</h1>
+                <button id="shop-add-product-btn" class="btn btn-primary" style="display: none;">
+                    <i class="fas fa-plus"></i> Add Product
+                </button>
+            </div>
+
+            <div class="card"
+                style="padding: 20px; display: inline-flex; gap: 10px; align-items: center; background: var(--surface-color);">
+                <label for="category-filter" style="font-weight: 600; margin-right: 5px;">Filter by:</label>
+                <select id="category-filter" class="form-select" style="min-width: 200px;">
+                    <option value="All">All Categories</option>
+                    <% if (typeof categories !=='undefined' ) { %>
+                        <% categories.forEach(cat=> { %>
+                            <option value="<%= cat %>" <%=typeof currentCategory !=='undefined' && currentCategory===cat
+                                ? 'selected' : '' %>>
+                                <%= cat %>
+                            </option>
+                            <% }) %>
+                                <% } %>
+                </select>
+                <button id="apply-filter-btn" class="btn btn-secondary">
+                    Apply <i class="fas fa-filter" style="margin-left: 5px;"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Add Product Form (Hidden by default) -->
+        <div id="shop-add-product-container" class="card mb-20" style="display: none; padding: 24px;">
+            <h2 class="mb-20">Add New Product</h2>
+            <form id="shop-add-product-form">
+                <input type="hidden" id="p-id">
+                <div class="dashboard-grid">
+                    <div>
+                        <div class="form-group">
+                            <label for="p-name" class="form-label">Product Name</label>
+                            <input type="text" id="p-name" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="p-price" class="form-label">Price</label>
+                            <input type="number" id="p-price" class="form-input" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="p-image" class="form-label">Product Image</label>
+                            <div style="display: flex; gap: 10px; align-items: center;">
+                                <input type="text" id="p-image" class="form-input" placeholder="Image URL" readonly
+                                    style="background: var(--background-color); color: var(--text-muted);">
+                                <label for="p-image-file" class="btn btn-secondary"
+                                    style="cursor: pointer; white-space: nowrap;">
+                                    <i class="fas fa-upload"></i> Upload
+                                </label>
+                                <input type="file" id="p-image-file" style="display: none;">
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-group">
+                            <label for="p-brand" class="form-label">Brand</label>
+                            <input type="text" id="p-brand" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="p-category" class="form-label">Category</label>
+                            <input type="text" id="p-category" class="form-input" list="category-list" required>
+                            <datalist id="category-list"></datalist>
+                        </div>
+                        <div class="form-group">
+                            <label for="p-countInStock" class="form-label">Count In Stock</label>
+                            <input type="number" id="p-countInStock" class="form-input" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="p-description" class="form-label">Description</label>
+                    <textarea id="p-description" class="form-input" rows="3" required></textarea>
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <button type="submit" class="btn btn-primary">Create Product</button>
+                    <button type="button" id="shop-cancel-btn" class="btn btn-secondary">Cancel</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="grid-container" id="product-grid">
+            <!-- Products injected via JS or server-side -->
+            <% if (typeof products !=='undefined' && products.length> 0) { %>
+                <% products.forEach(product=> { %>
+                    <div class="card product-card">
+                        <div class="product-image">
+                            <a href="/product/<%= product._id %>">
+                                <img src="<%= product.image %>" alt="<%= product.name %>">
+                            </a>
+                            <button class="add-to-cart-btn" data-id="<%= product._id %>">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                        <div class="product-info">
+                            <div class="product-category">
+                                <%= product.category %>
+                            </div>
+                            <a href="/product/<%= product._id %>">
+                                <h3 class="product-title">
+                                    <%= product.name %>
+                                </h3>
+                            </a>
+                            <p class="text-muted-sm" style="font-size: 0.8rem; margin-bottom: 5px;">
+                                Added by <%= product.user ? product.user.name : 'Unknown' %>
+                            </p>
+                            <div class="rating">
+                                <% for(let i=0; i < 5; i++) { %>
+                                    <% if (product.rating>= i + 1) { %>
+                                        <i class="fas fa-star"></i>
+                                        <% } else if (product.rating>= i + 0.5) { %>
+                                            <i class="fas fa-star-half-alt"></i>
+                                            <% } else { %>
+                                                <i class="far fa-star"></i>
+                                                <% } %>
+                                                    <% } %>
+                                                        <span class="text-muted-sm">(<%= product.numReviews %>)</span>
+                            </div>
+                            <div class="product-footer">
+                                <div class="product-price">
+                                    <% if (product.discount> 0) { %>
+                                        <span
+                                            style="text-decoration: line-through; color: #888; font-size: 0.9em; margin-right: 5px;">€
+                                            <%= product.price %>
+                                        </span>
+                                        <span style="color: var(--danger-color);">€<%= product.discountedPrice %></span>
+                                        <% } else { %>
+                                            €<%= product.price %>
+                                                <% } %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <% }) %>
+                        <% } else { %>
+                            <p>No products found.</p>
+                            <% } %>
+        </div>
+
+        <!-- Pagination -->
+        <% if (typeof pages !=='undefined' && pages> 1) { %>
+            <div class="shop-pagination"
+                style="display: flex; justify-content: center; gap: 10px; margin-top: 40px; align-items: center;">
+                <% if (page> 1) { %>
+                    <a href="/shop?pageNumber=<%= page - 1 %><%= keyword ? '&keyword=' + keyword : '' %><%= currentCategory && currentCategory !== 'All' ? '&category=' + currentCategory : '' %>"
+                        class="btn btn-secondary pagination-btn">
+                        <i class="fas fa-chevron-left"></i>
+                    </a>
+                    <% } %>
+
+                        <% for(let i=1; i <=pages; i++) { %>
+                            <a href="/shop?pageNumber=<%= i %><%= keyword ? '&keyword=' + keyword : '' %><%= currentCategory && currentCategory !== 'All' ? '&category=' + currentCategory : '' %>"
+                                class="btn <%= page === i ? 'btn-primary' : 'btn-secondary' %> pagination-btn">
+                                <%= i %>
+                            </a>
+                            <% } %>
+
+                                <% if (page < pages) { %>
+                                    <a href="/shop?pageNumber=<%= page + 1 %><%= keyword ? '&keyword=' + keyword : '' %><%= currentCategory && currentCategory !== 'All' ? '&category=' + currentCategory : '' %>"
+                                        class="btn btn-secondary pagination-btn">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </a>
+                                    <% } %>
+            </div>
+            <% } %>
+
+                <script>
+                    document.addEventListener('DOMContentLoaded', () => {
+                        const applyBtn = document.getElementById('apply-filter-btn');
+                        if (applyBtn) {
+                            applyBtn.addEventListener('click', applyFilter);
+                        }
+                    });
+
+                    function applyFilter() {
+                        try {
+                            const category = document.getElementById('category-filter').value;
+                            console.log('Applying filter for category:', category);
+
+                            const urlParams = new URLSearchParams(window.location.search);
+                            if (category === 'All') {
+                                urlParams.delete('category');
+                            } else {
+                                urlParams.set('category', category);
+                            }
+                            // Reset to page 1 when filtering
+                            urlParams.set('pageNumber', 1);
+                            window.location.search = urlParams.toString();
+                        } catch (error) {
+                            console.error('Error applying filter:', error);
+                            alert('Something went wrong applying the filter. Please try again.');
+                        }
+                    }
+                </script>
+    </main>
+
+    <script src="/js/shop.js"></script>
+    <%- include('partials/footer') %>

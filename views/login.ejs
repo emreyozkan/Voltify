@@ -1,0 +1,49 @@
+<%- include('partials/header', { cssFile: '/css/login.css' }) %>
+
+    <main class="auth-wrapper">
+        <div class="auth-container">
+            <div class="auth-image" style="background-image: url('/images/login-bg-v2.png');">
+                <div class="auth-overlay">
+                    <h1>Welcome Back</h1>
+                    <p>Power up your world with the latest tech.</p>
+                </div>
+            </div>
+            <div class="auth-form-section">
+                <div class="auth-header">
+                    <h2>Sign In</h2>
+                    <p>Enter your details to continue</p>
+                </div>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" class="form-control" placeholder="name@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" class="form-control" placeholder="••••••••" required>
+                    </div>
+                    <div class="form-actions">
+                        <label class="checkbox-container">
+                            <input type="checkbox"> Remember me
+                        </label>
+                        <a href="/forgot-password" class="forgot-password">Forgot password?</a>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                </form>
+                <div class="auth-footer">
+                    New to Voltify? <a href="/register">Create an account</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="/js/auth.js"></script>
+    <script>
+        // Check for verification success
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('verified') === 'true') {
+            showToast('Email verified successfully! Please login.', 'success');
+        }
+    </script>
+
+    <%- include('partials/footer') %>

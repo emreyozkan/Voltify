@@ -1,0 +1,26 @@
+<%- include('partials/header') %>
+
+    <main class="container mt-20">
+        <h1>Shopping Cart</h1>
+        <div class="cart-grid">
+            <div id="cart-items">
+                <!-- Cart items injected via JS for now, as cart is in localStorage/DB via API -->
+                <p>Loading cart...</p>
+                <p>Loading cart...</p>
+            </div>
+
+            <div class="card">
+                <h2 class="mb-20">Subtotal (<span id="cart-count">0</span>) items</h2>
+                <div class="cart-total">
+                    €<span id="cart-total">0.00</span>
+                </div>
+                <button id="checkout-btn" class="btn btn-primary btn-block">
+                    Proceed to Checkout
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <script src="/js/cart.js?v=<%= Date.now() %>"></script>
+
+    <%- include('partials/footer') %>

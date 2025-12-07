@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voltify - Modern Tech Shop</title>
+    <link rel="icon" type="image/svg+xml" href="/images/favicon.svg">
+    <link rel="stylesheet" href="/css/style.css?v=<%= Date.now() %>">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <% if (typeof cssFile !=='undefined' ) { %>
+        <link rel="stylesheet" href="<%= cssFile %>">
+        <% } %>
+
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="/" class="logo" style="display: flex; align-items: center; gap: 5px; text-decoration: none;">
+                <svg width="160" height="40" viewBox="0 0 160 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <!-- V: Left stroke -->
+                    <path d="M12 5 L28 35" stroke="#7FDBFF" stroke-width="5" stroke-linecap="round" />
+
+                    <!-- V: Right stroke (Lightning Bolt) -->
+                    <!-- Adjusted to align perfectly with the bottom of the left stroke -->
+                    <path d="M28 35 L42 5 L30 18 L45 18 L28 35" fill="#7FDBFF" stroke="#7FDBFF" stroke-width="1"
+                        stroke-linejoin="round" />
+
+                    <!-- oltify text -->
+                    <text x="50" y="30" font-family="'Inter', sans-serif" font-weight="700" font-size="28"
+                        fill="#7FDBFF" letter-spacing="1">oltify</text>
+                </svg>
+            </a>
+
+            <div class="search-bar">
+                <input type="text" id="search-input" placeholder="Search for premium tech..."
+                    value="<%= typeof keyword !== 'undefined' ? keyword : '' %>">
+                <button id="search-btn"><i class="fas fa-search"></i></button>
+            </div>
+
+            <div class="nav-links">
+                <a href="/" class="nav-item <%= typeof page !== 'undefined' && page === 'home' ? 'active' : '' %>">
+                    Home
+                </a>
+                <a href="/shop" class="nav-item">Shop</a>
+                <!-- Categories removed as per request -->
+
+                <div style="width: 1px; height: 24px; background: rgba(255,255,255,0.1); margin: 0 8px;"></div>
+
+                <!-- Dynamic User Menu -->
+                <div id="user-menu" style="display: flex; align-items: center; gap: 16px;">
+                    <!-- Content injected by main.js -->
+                    <a href="/login" class="nav-item btn btn-primary"
+                        style="padding: 8px 20px; border-radius: 50px; color: white;">
+                        Sign In
+                    </a>
+                </div>
+
+                <!-- Theme Toggle -->
+                <button class="nav-icon-btn" id="theme-toggle" title="Toggle Theme" style="margin-left: 8px;">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>

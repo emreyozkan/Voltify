@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Navy Blue Background Square -->
+  <rect width="512" height="512" fill="#001f3f"/>
+  
+  <!-- Light Blue Lightning Bolt -->
+  <!-- Centered and sharp -->
+  <path d="M290 60 L390 60 L280 240 L400 240 L140 460 L230 280 L130 280 Z" fill="#7FDBFF"/>
+</svg>

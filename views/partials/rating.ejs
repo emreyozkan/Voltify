@@ -1,0 +1,8 @@
+<% for (let i=1; i <=5; i++) { if (i <=rating) { %>
+    <i class="fas fa-star"></i>
+    <% } else if (i===Math.ceil(rating) && !Number.isInteger(rating)) { %>
+        <i class="fas fa-star-half-alt"></i>
+        <% } else { %>
+            <i class="far fa-star"></i>
+            <% } } %>
+                <span>(<%= numReviews %>)</span>

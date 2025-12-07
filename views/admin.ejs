@@ -1,0 +1,34 @@
+<%- include('partials/header') %>
+
+    <main class="container mt-40">
+        <div class="section-header">
+            <h1>Admin Dashboard</h1>
+        </div>
+
+        <div class="card" style="padding: 24px;">
+            <h2 class="mb-20">User Management</h2>
+            <div class="table-container">
+                <table class="premium-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Admin</th>
+                            <th>Seller</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="user-list">
+                        <!-- Users injected via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <%- include('partials/confirm-modal') %>
+        <script src="/js/modal-utils.js"></script>
+        <script src="/js/admin.js"></script>
+
+        <%- include('partials/footer') %>
